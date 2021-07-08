@@ -14,6 +14,8 @@ export default class RestaurantsController {
     // arent filters passed on as well ?
 
     // yes there are !!! we are just getting the 3 values.
+    // notice how we are not querying the database here, we are just reconstructing the appropriate request that needs to be handed out to the DAO
+    // the actual querying will be done in the DAO
     let filters = {}
     if (req.query.cuisine) {
       filters.cuisine = req.query.cuisine
@@ -29,6 +31,7 @@ export default class RestaurantsController {
       restaurantsPerPage,
     })
 
+    // constructing the response
     let response = {
       restaurants: restaurantsList,
       page: page,
@@ -36,6 +39,8 @@ export default class RestaurantsController {
       entries_per_page: restaurantsPerPage,
       total_results: totalNumRestaurants,
     }
+
+    // sending back the response
     res.json(response)
   }
 }
