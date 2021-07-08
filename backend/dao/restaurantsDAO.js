@@ -1,8 +1,17 @@
-import mongodb from "mongodb"
-const ObjectId = mongodb.ObjectID
+
+// This is the Model in MVC
+  // handles data logic
+  // interats with the database
+
+// this is used to define the connection to the mongodb restaunts database
+// a specific collection perhaps ?
+
+// used to store 
 let restaurants
 
 export default class RestaurantsDAO {
+  // this is how we initialte a connec to database. Call this as soon as server starts.
+  // still wondering what conn is
   static async injectDB(conn) {
     if (restaurants) {
       return
@@ -16,7 +25,9 @@ export default class RestaurantsDAO {
     }
   }
 
+  // the parameters are just made up, because we are defining these functions here, we can make up whatever we want.
   static async getRestaurants({
+    // user can provide all these values
     filters = null,
     page = 0,
      restaurantsPerPage = 20,
@@ -24,6 +35,7 @@ export default class RestaurantsDAO {
     let query
     if (filters) {
       if ("name" in filters) {
+        // mongodb special text search
         query = { $text: { $search: filters["name"] } }
       } else if ("cuisine" in filters) {
         query = { "cuisine": { $eq: filters["cuisine"] } }
@@ -32,6 +44,8 @@ export default class RestaurantsDAO {
       }
     }
 
+    // till now it was a query formation. 
+    // to use this query we use cursor
     let cursor
     
     try {
